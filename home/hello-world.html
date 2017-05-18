@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Delete Projects</title>
+    <script src="scripts/VSS.SDK.js"></script>
+    <script type="text/javascript">
+        VSS.init({
+
+            usePlatformScripts: true,
+            usePlatformStyles: true
+        });
+
+        // Register callback to get called when initial handshake completed
+        VSS.ready(function () {
+            VSS.require(["require", "exports", "VSS/Service", "TFS/Core/RestClient", "VSS/Controls", "VSS/Controls/Grids"], function (require, exports, VSS_Service, TFS_Wit_WebApi, Controls, Grids) {
+                var witClient = VSS_Service.getCollectionClient(TFS_Wit_WebApi.CoreHttpClient);
+
+                var container = $("#sample-container");
+
+                witClient.getProjects('WellFormed', 1000, 0).then(
+                  function (projects) {
+                      //console.log(JSON.stringify(projs));
+
+                      // Initialize the grid control with two colums, "key" and "value"
+                      var dataSource = projects;
+                      //dataSource.push({ key: "key", value: "value" });
+                      function menuItemClick(args) {
+                          // Get the item associated with the context menu
+                         
+                          switch (args.get_commandName()) {                             
+                              case "delete":
+                                  confirm("Are you sure you want to delete ?");
+                                  break;
+                          }
+                      }
+                      function getContextMenuItems() {
+                          return [
+                              {
+                                  id: "open",
+                                  text: "Open"
+                                  
+                              },
+                              { separator: true },
+                              {
+                                  id: "delete",
+                                  text: "Delete",
+                                  icon: "icon-delete"
+                              },
+                          ];
+                      }
+                      var gridOptions = {
+                          height: "500px",
+                       
+                          source: dataSource,
+                          columns: [
+                              { text: "Id", index: "id", width: 350 },
+                              { text: "Name", index: "name", width: 350 }
+
+                          ],
+                          gutter: {
+                              contextMenu: true
+                          },
+                          contextMenu: {
+                              items: getContextMenuItems(),
+                              executeAction: menuItemClick,
+                              arguments: function (contextInfo) {
+                                  return { item: contextInfo.item };
+                              }
+                          }
+                      };
+                      Controls.create(Grids.Grid, container, gridOptions);
+                     
+
+                  });
+            });
+        });
+           
+    </script>
+</head>
+<body>
+    <script type="text/javascript">VSS.init();</script>
+    <h1>Mukteswar's VSTS Extension, Listing all Projects in your VSTS account</h1>
+    <h2>List of Projects in Your Account:</h2>
+    <div id="sample-container">
+    </div>
+   
+    <script type="text/javascript">
+        VSS.notifyLoadSucceeded();
+    </script>
+</body>
+</html>

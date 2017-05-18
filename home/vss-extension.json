@@ -1,0 +1,49 @@
+    {
+        "manifestVersion": 1,
+        "id": "ListingAllProjects",
+        "version": "0.0.1",
+        "name": "List all Project",
+        "description": "An extension to list all projects from VSTS account.",
+        "publisher": "mukteswar",
+        "targets": [
+            {
+                "id": "Microsoft.VisualStudio.Services"
+                }
+            ],
+        "icons": {
+            "default": "images/logo.png"
+         },
+        "contributions": [
+            {
+                "id": "mukteswar.ListingAllProjects",
+                "type": "ms.vss-web.hub",
+                "description": "Adds a 'Projects List' hub to the Work hub group.",
+                "targets": [
+                    "ms.vss-web.collection-admin-hub-group"
+                    ],
+                "properties": {
+                    "name": "ProjectsList",
+                    "order": 99,
+                    "uri": "hello-world.html"
+                }
+            }
+        ],
+        "scopes": [
+            "vso.work",
+			"vso.profile"
+        ],
+        "files": [
+            {
+                "path": "hello-world.html", "addressable": true
+            },
+            {
+                "path": "scripts", "addressable": true
+            },
+            {
+                "path": "sdk/scripts", "addressable": true
+            },
+            {
+                "path": "images/logo.png", "addressable": true
+            }
+        ]
+    }
